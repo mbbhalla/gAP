@@ -1,0 +1,24 @@
+{
+	"name": "gAP",
+	"version": "0.0.1-8",
+	"author": "JManuj",
+	"description": "gesturing advertisements",
+	"scripts": {
+		"start": "node server.js"
+	},
+	"dependencies": {
+		"socket.io": ">=0.9.6"
+	},
+	"engine": {
+		"node": ">=0.4"
+	},
+	"files": [
+		"server.js",
+		"mobile.html",
+		"desktop.html"
+	],
+	"subdomain": "jmanuj-gAP",
+	"engines": {
+		"node": "0.8.x"
+	}
+}

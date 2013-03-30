@@ -1,0 +1,68 @@
+<!-- index for desktop -->
+<html>    
+<head>
+	<title>gAP</title>
+	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+	<script>
+			/* M */
+			var seed = 	Math.floor(Math.random() * 10000000);
+			var socket = io.connect('/desktop');
+			socket.emit('seed', {
+					'seed': seed
+			});
+
+	</script>
+	<style type="text/css">
+
+	</style>
+</head>
+<body bgcolor="black">
+		<div style="text-align: center; font-size:30px; background-color: black; color: white;" >
+			gAP - Gesture based web ads
+		</div>
+		<br/><br/><br/><br/><br/>
+	<table align="center" bgcolor="#000000">
+		<tr>
+			<td align="center" style="width:400px;padding-bottom: 5em" colspan="2">	
+				<img src="http://farm8.staticflickr.com/7194/6818967342_b4088ab54f.jpg" style="height:300px;-webkit-backface-visibility=hidden" id="imgLogo">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<img id="qrimg"/>
+			</td>
+			<td>
+					<img style="width:400px; height:200px;" src="http://searchable.com/blog/wp-content/uploads/2012/12/Coca-Cola-Hacked-in-2009-Breach-Possibly-Affected-Acquisition-Bloomberg.jpg"/>
+			</td>
+		</tr>
+		<tr>
+				<td colspan="2" style="text-align: center; font-size:30px; background-color: black; color: blue;" align="center">Powered by node + socket.io</td>
+		</tr>
+	</table>
+
+	<script>
+    var url = window.location.href;
+    var arr = url.split("/");
+    var result = arr[0] + "//" + arr[2];
+		$(document).ready(function() {
+
+				/* M */
+			$('#qrimg').attr('src', 'http://qrcode.kaywa.com/img.php?s=5&d=' + result + '%2F?seed='+seed);
+
+			function moveobject(eventData) {
+				  // Apply the 2D rotation and 3D rotation to the image
+				  var rotation = "rotate(" + eventData.tiltLR + "deg) rotate3d(1,0,0, " + (eventData.tiltFB) + "deg)";
+				  document.getElementById("imgLogo").style.webkitTransform = rotation; 
+			}
+			
+			socket.on('MOTIONDATA', function(eventData) {
+					moveobject(eventData);
+			});
+		});
+	</script>
+</body>
+</html>
+
+
+

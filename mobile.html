@@ -1,0 +1,70 @@
+<!-- index for mobile -->
+<html>    
+<head>
+	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+	<script>
+			/* M */
+		var seed = '<<seed>>';	
+		var socket = io.connect('/mobile');
+
+		/* M */
+		socket.emit('seed', {
+				'seed': seed
+		});
+
+		function emit(motion) {
+				socket.emit('MOTIONDATA', {
+					tiltLR: motion.tiltLR,
+					tiltFB: motion.tiltFB,
+					dir: motion.dir,
+					motUD: motion.motUD
+				});
+		}
+   </script>
+</head>
+<body>
+		<p id="doEvent">Client</p>
+		<script>
+			$(document).ready(function() {
+				init();	
+				function init() {
+					if (window.DeviceOrientationEvent) {
+						window.addEventListener('deviceorientation', function(eventData) {
+							var tiltLR = eventData.gamma;
+							var tiltFB = eventData.beta;
+							var dir = eventData.alpha
+							var motUD = null;
+							  emit({
+								tiltLR: tiltLR,
+								tiltFB: tiltFB,
+								dir: dir,
+								motUD: motUD
+							  });
+
+						}, false);
+					} else if (window.OrientationEvent) {
+						window.addEventListener('MozOrientation', function(eventData) {
+							var tiltLR = eventData.x * 90;
+							var tiltFB = eventData.y * -90;
+							var dir = null;
+							var motUD = eventData.z;
+							  emit({
+							    tiltLR: tiltLR,
+								tiltFB: tiltFB,
+								dir: dir,
+								motUD: motUD
+							  });
+
+						}, false);
+					} else {
+							$("#doEvent").html("Not supported on your device or browser.  Sorry.");
+					}
+				}
+			});
+		</script>
+</body>
+</html>
+
+
+
